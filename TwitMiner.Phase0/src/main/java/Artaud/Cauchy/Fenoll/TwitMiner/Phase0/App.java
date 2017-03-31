@@ -17,8 +17,11 @@ public class App
         List<twitter4j.Status> statuses = twitter.getHomeTimeline();
         System.out.println("Showing home timeline.");
         for (twitter4j.Status status : statuses) {
-            System.out.println(status.getUser().getName() + ":" +
-                               status.getText());
+            String row = status.getUser().getName() + ":";
+        	String[] splited = status.getText().split("\\s+");
+            for (String s : splited)
+            	row += "\"" + s + "\";";
+            System.out.println(row);
         }
     }
 }
