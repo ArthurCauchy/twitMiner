@@ -23,7 +23,7 @@ public class TwitterSearch {
         QueryResult result = twitter.search(request);
         ArrayList<String> res = new ArrayList<String>();
         for (Status status : result.getTweets()) {
-            String row = status.getUser().getName() + ":";
+            String row = "\"" + status.getCreatedAt() + "\";\"@" + status.getUser().getScreenName() + "\";";
         	String[] splited = status.getText().split("\\s+");
             for (String s : splited)
             	row += "\"" + s + "\";";
