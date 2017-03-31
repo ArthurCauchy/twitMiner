@@ -14,11 +14,12 @@ public class App
     	// The factory instance is re-useable and thread safe.
     	ConfigurationBuilder cb = new ConfigurationBuilder();
     	cb.setDebugEnabled(true)
-    	  .setOAuthConsumerKey("*********************")
-    	  .setOAuthConsumerSecret("******************************************")
-    	  .setOAuthAccessToken("**************************************************")
-    	  .setOAuthAccessTokenSecret("******************************************");
-        Twitter twitter = TwitterFactory.getSingleton();
+    	  .setOAuthConsumerKey("veVx5ut2r7osOo3yOJgDAs18E")
+    	  .setOAuthConsumerSecret("LMKS8EEBsd9yvtq2j6amaPKvqFRoBui9HrfP0ROg7sXU1iQwSV")
+    	  .setOAuthAccessToken("847701684079869953-XRMgBKS6eloIkMvsORunF6ryj3qVj1y")
+    	  .setOAuthAccessTokenSecret("dH8PTjk4gUqLhGYjOzWt4RmtB5rQfzetWHrl3gjscYdfL");
+    	TwitterFactory tf = new TwitterFactory(cb.build());
+    	Twitter twitter = tf.getInstance();
         List<twitter4j.Status> statuses = twitter.getHomeTimeline();
         System.out.println("Showing home timeline.");
         for (twitter4j.Status status : statuses) {
