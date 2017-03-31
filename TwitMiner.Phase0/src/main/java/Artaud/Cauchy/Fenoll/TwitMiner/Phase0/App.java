@@ -1,31 +1,45 @@
 package Artaud.Cauchy.Fenoll.TwitMiner.Phase0;
 
-import twitter4j.Query;
-import twitter4j.QueryResult;
-import twitter4j.Status;
-import twitter4j.Twitter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 
 public class App 
 {
-    public static void main( String[] args ) throws TwitterException
+	private static long WAITING = 900000; 
+	
+    public static void main( String[] args ) throws TwitterException, IOException
     {
-    	// The factory instance is re-useable and thread safe.
-    	
-    	TwitterFactory tf = new TwitterFactory(Configuration.getInstance().build());
-    	Twitter twitter = tf.getInstance();
-    	Query query = new Query("jeux vidéos");
-    	query.setLang("fr");
-    	query.setCount(200);
-        QueryResult result = twitter.search(query);
-		System.out.println("Showing results");
-        for (Status status : result.getTweets()) {
-            String row = status.getUser().getName() + ":";
-        	String[] splited = status.getText().split("\\s+");
-            for (String s : splited)
-            	row += "\"" + s + "\";";
-            System.out.println(row);
-        }
+    	if (args.length != 4) {
+    		System.err.println("query lang number file");
+    		System.exit(1);
+    	}
+    	int quantity = Integer.parseInt(args[2]);
+    	File file = new File(args[3]);
+    	if (! file.exists()) 
+    		file.createNewFile();
+    	PrintWriter out = new PrintWriter(new FileOutputStream(file)); 
+    	TwitterSearch ts = new TwitterSearch();
+    	for (int i = 0; i <= quantity/100; ++i) {
+    		ArrayList<String> rows = ts.search(args[0], args[1]);
+    		for (String row : rows) {
+    			System.out.println(row);
+    			out.println(row);
+    			out.flush();
+    		}
+    		
+    		try {
+				Thread.sleep(WAITING);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	out.close();
     }
 }
