@@ -22,6 +22,14 @@ public class ExtractAssoc {
 				motifs.add(line);
 			}
 		}
-		
+		for (String line : motifs) {
+			Motif courant = new Motif(line);
+			if (courant.getItems().size() < 2) continue;
+			for (String line2 : motifs) {
+				Motif sub = new Motif(line2);
+				if (! courant.isSubEns(sub)) continue;
+				
+			}	
+		}
 	}
 }
