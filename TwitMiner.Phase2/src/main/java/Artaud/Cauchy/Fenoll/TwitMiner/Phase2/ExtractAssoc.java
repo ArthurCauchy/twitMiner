@@ -12,6 +12,7 @@ public class ExtractAssoc {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		if (args.length != 2) {
 			System.out.println("Usage : <File.apriori> <minconf>");
+			return;
 		}
 		
 		List<String> motifs = new ArrayList<String>();
