@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectOutputStream;import java.io.OutputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class CsvToTrans
     {
     	if (args.length != 2) {
     		System.out.println("Usage : ./CsvToTrans <file.csv> <file.map>");
-    		System.exit(1);
+    		return;
     	}
     	Map<String, Integer> mapTrans = new HashMap<String, Integer>();
     	List<String> twits = new ArrayList<String>();

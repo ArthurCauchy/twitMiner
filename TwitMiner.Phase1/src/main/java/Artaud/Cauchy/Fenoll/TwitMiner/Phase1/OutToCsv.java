@@ -15,7 +15,8 @@ public class OutToCsv {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 		if (args.length != 1) {
-			System.out.println("Usage : ./CsvToTrans <file.apriori>");
+			System.out.println("Usage : ./OutToCsv <file.apriori>");
+			return;
 		}
 		File mapFile = new File(args[0].split("\\.")[0] + ".map");
 		
