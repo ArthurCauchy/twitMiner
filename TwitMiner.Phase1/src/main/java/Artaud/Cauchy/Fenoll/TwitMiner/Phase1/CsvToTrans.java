@@ -67,7 +67,7 @@ public class CsvToTrans
     	
     	Map<Integer, String> mapAssoc = mapTrans.entrySet().stream()
     			.collect(Collectors.toMap(Entry::getValue, Entry::getKey));
-    	File mapFile = new File(args[0].split("\\.")[0] + ".map");
+    	File mapFile = new File(args[0].split("\\.")[0] + ".trans");
     	mapFile.createNewFile();
     	ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(mapFile));
     	out.writeObject(mapAssoc);
