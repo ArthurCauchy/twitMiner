@@ -21,7 +21,7 @@ public class CsvToTrans
     public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException
     {
     	if (args.length != 2) {
-    		System.out.println("Usage : ./CsvToTrans <file.csv> <file.trans>");
+    		System.out.println("Usage : ./CsvToTrans <file.csv> <file.map>");
     		System.exit(1);
     	}
     	Map<String, Integer> mapTrans = new HashMap<String, Integer>();
@@ -67,7 +67,7 @@ public class CsvToTrans
     	
     	Map<Integer, String> mapAssoc = mapTrans.entrySet().stream()
     			.collect(Collectors.toMap(Entry::getValue, Entry::getKey));
-    	File mapFile = new File(args[0].split("\\.")[0] + ".trans");
+    	File mapFile = new File(args[0].split("\\.")[0] + ".map");
     	mapFile.createNewFile();
     	ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(mapFile));
     	out.writeObject(mapAssoc);
