@@ -15,20 +15,20 @@ public class ExtractAssoc {
 			return;
 		}
 		
-		List<String> motifs = new ArrayList<String>();
-		File apriori = new File(args[0]);
+		List<String> motifs = new ArrayList<String>(); // Contiendra le fichier ligne par ligne
+		File apriori = new File(args[0]); // Le fichier d'entrée
 		try (BufferedReader in = new BufferedReader(new FileReader(apriori))) {
 			String line = null;
 			while ((line = in.readLine()) != null){
-				motifs.add(line);
+				motifs.add(line); // On place chaque ligne du fichier dnans l'arraylist
 			}
 		}
 		for (String line : motifs) {
-			Motif courant = new Motif(line);
-			if (courant.getItems().size() < 2) continue;
-			for (String line2 : motifs) {
-				Motif sub = new Motif(line2);
-				if (! courant.isSubEns(sub)) continue;
+			Motif courant = new Motif(line); // On crée un nouveau motif à partir de la ligne
+			if (courant.getItems().size() < 2) continue; // Si moins de 2 occurences on passe au suivant
+			for (String line2 : motifs) { // Sinon on compare aux autres mots
+				Motif sub = new Motif(line2); // On crée un second motif
+				if (! courant.isSubEns(sub)) continue; // Si c'est un sous-ensemble on passe au suivant
 				
 			}	
 		}
