@@ -12,6 +12,7 @@ public class Motif {
 		suport = Integer.parseInt(itemsS[itemsS.length-1].substring(1, itemsS[itemsS.length-1].length()-1)); // Le nombre d'occurences
 		items = new ArrayList<Integer>();
 		for (int i  = 0; i < itemsS.length-1; ++i) {
+			//System.out.println("---" + Integer.parseInt(itemsS[i]));
 			items.add(Integer.parseInt(itemsS[i])); // On ajoute les items
 		}
 	}

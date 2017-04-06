@@ -24,13 +24,18 @@ public class ExtractAssoc {
 			}
 		}
 		for (String line : motifs) {
-			Motif courant = new Motif(line); // On crée un nouveau motif à partir de la ligne
+			Motif courant = new Motif(line); // On crée un nouveau motif Y à partir de la ligne
+			//System.out.println(courant.getItems().toString() + " | " + courant.getSuport());
 			if (courant.getItems().size() < 2) continue; // Si moins de 2 occurences on passe au suivant
-			for (String line2 : motifs) { // Sinon on compare aux autres mots
-				Motif sub = new Motif(line2); // On crée un second motif
-				if (! courant.isSubEns(sub)) continue; // Si c'est un sous-ensemble on passe au suivant
-				
-			}	
+			for (String line2 : motifs) {
+				Motif sub = new Motif(line2); // On crée un second motif X
+				if ((sub.getItems().isEmpty()) // Si X ne contient pas d'items
+					||(! courant.isSubEns(sub)) // OU X n'est pas un sous-ensemble de Y
+					||(sub.getItems().containsAll(courant.getItems()))) // OU si X = Y
+					continue; // On passe au suivant
+				//System.out.println("------" + sub.getItems().toString() + " | " + sub.getSuport());
+				System.out.println(sub.getItems().toString() + " | " + sub.getSuport() + " sous-ensemble de " + courant.getItems().toString() + " | " + courant.getSuport());
+			}
 		}
 	}
 }
