@@ -24,14 +24,14 @@ public class Filter {
 		List<String> uselessDico = new ArrayList<String>();
 		String lineDico;
 	    while ((lineDico = uselessDicoReader.readLine()) != null) {
-	    	uselessDico.add(lineDico);
+	    	uselessDico.add(lineDico.toUpperCase());
 	    }
 		String lineIn;
 	    while ((lineIn = fileIn.readLine()) != null) {
 	    	String[] words = lineIn.split("\";\"");
 	    	String lineOut = "";
 	    	for (int i = 0; i < words.length; ++i) {
-	    		if (uselessDico.contains(words[i]))
+	    		if (uselessDico.contains(words[i].toUpperCase()))
 	    			continue;
 	    		lineOut += "\"" + words[i] + "\";";
 	    	}
