@@ -28,7 +28,6 @@ public class Filter {
 	    }
 		String lineIn;
 	    while ((lineIn = fileIn.readLine()) != null) {
-	    	System.out.println(lineIn);
 	    	String[] words = lineIn.split("\";\"");
 	    	String lineOut = "";
 	    	for (int i = 0; i < words.length; ++i) {
@@ -36,8 +35,7 @@ public class Filter {
 	    			continue;
 	    		lineOut += "\"" + words[i] + "\";";
 	    	}
-	    	//fileOut.println(lineOut);
-	    	System.out.println(lineOut);
+	    	fileOut.println(lineOut);
 	    	System.out.println("");
 	    }
 	}
