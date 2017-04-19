@@ -15,10 +15,10 @@ public class OutToCsv {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 		if (args.length != 1) {
-			System.out.println("Usage : ./OutToCsv <file.apriori>");
+			System.out.println("Usage : ./OutToCsv <file.apriori> <file.map>");
 			return;
 		}
-		File mapFile = new File(args[0].split("\\.")[0] + ".map");
+		File mapFile = new File(args[1]);
 		
 		Map<Integer, String> mapAssoc = null;
 		try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(mapFile))){
