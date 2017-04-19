@@ -14,11 +14,11 @@ import java.util.Map;
 public class OutToCsv {
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
-		if (args.length != 1) {
-			System.out.println("Usage : ./OutToCsv <file.apriori> <file.map>");
+		if (args.length != 2) {
+			System.out.println("Usage : ./OutToCsv <file.map> <file.csv>");
 			return;
 		}
-		File mapFile = new File(args[1]);
+		File mapFile = new File(args[0]);
 		
 		Map<Integer, String> mapAssoc = null;
 		try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(mapFile))){
@@ -26,9 +26,9 @@ public class OutToCsv {
 		}
 		System.out.println(mapAssoc);
 		
-		File aprioriFile = new File(args[0]);
+		File aprioriFile = new File(args[1]);
 		try(BufferedReader in = new BufferedReader(new FileReader(aprioriFile))) {
-			File aprioriCsv = new File(args[0] + ".csv");
+			File aprioriCsv = new File(args[1]);
 			aprioriCsv.createNewFile();
 			try (BufferedWriter out = new BufferedWriter(new FileWriter(aprioriCsv))){
 				String line;
