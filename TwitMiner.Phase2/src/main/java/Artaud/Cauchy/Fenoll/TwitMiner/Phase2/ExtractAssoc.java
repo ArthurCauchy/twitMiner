@@ -14,14 +14,14 @@ import java.util.Set;
 
 public class ExtractAssoc {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
-		if (args.length != 2) {
-			System.out.println("Usage : <File.apriori> <minconf>");
+		if (args.length != 3) {
+			System.out.println("Usage : <File.apriori> <minconf> <File.assoc>");
 			return;
 		}
 		double minConf = Double.parseDouble(args[1]);
 		List<String> motifs = new ArrayList<String>(); // Contiendra le fichier ligne par ligne
 		File apriori = new File(args[0]); // Le fichier d'entrée
-		File outFile = new File(args[0].split("\\.")[0]+".assoc");
+		File outFile = new File(args[2]);
 		try (BufferedReader in = new BufferedReader(new FileReader(apriori))) {
 			String line = null;
 			while ((line = in.readLine()) != null){
