@@ -35,6 +35,7 @@ public class OutToCsv {
 				while ((line = in.readLine()) != null) {
 					String words [] = line.split(" ");
 					for (int i = 0; i < words.length - 1; ++i) {
+						if(words[i].equals("->")) out.write("\"->\";");
 						//System.out.println(mapAssoc.get(Integer.parseInt(words[i])));
 						out.write("\"" + (mapAssoc.get(Integer.parseInt(words[i])) + "\";"));
 					}
