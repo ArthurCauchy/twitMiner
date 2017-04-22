@@ -1,6 +1,7 @@
 package Artaud.Cauchy.Fenoll.TwitMiner.Phase3;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,6 +31,7 @@ public class DoLift {
 		BufferedReader aprioriReader = new BufferedReader(new FileReader(args[0]));
 		BufferedReader assocReader = new BufferedReader(new FileReader(args[1]));
 		PrintWriter liftWriter = new PrintWriter(args[3], "UTF-8");
+		liftWriter.flush();
 		SortedMap<Double, String> scoreMap = new TreeMap<Double, String>(Collections.reverseOrder());
 		Map<String, Integer> freqMap = new HashMap<String, Integer>();
 		String lineApriori;
@@ -52,10 +54,15 @@ public class DoLift {
 	    	scoreMap.put(score, assoc);
 	    }
 	    
+	    int i = 0;
 	    for(Entry<Double, String> entry : scoreMap.entrySet()) {
+	    	if (i >= Integer.parseInt(args[2]))
+	    		break;
 	    	Double score = entry.getKey();
 	    	String assoc = entry.getValue();
+	    	System.out.println("DEBUG " + assoc + " (" + score + ")" + " DEBUG");
 	    	liftWriter.println(assoc + " (" + score + ")");
+	    	++i;
 	    }
 	}
 }
