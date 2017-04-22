@@ -15,7 +15,7 @@ import java.util.Set;
 public class ExtractAssoc {
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		if (args.length != 3) {
-			System.out.println("Usage : <File.apriori> <minconf> <File.assoc>");
+			System.out.println("Usage : ./extract <File.apriori> <minconf> <File.assoc>");
 			return;
 		}
 		double minConf = Double.parseDouble(args[1]);
