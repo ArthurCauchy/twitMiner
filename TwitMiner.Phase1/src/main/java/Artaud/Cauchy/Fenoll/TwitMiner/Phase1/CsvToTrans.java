@@ -12,8 +12,8 @@ import java.util.Map;
 public class CsvToTrans 
 {
 	/* Inverse les valeurs avec les clés d'une map */
-	private static <K,V> Map<V, K> invertMap(Map<K, V> toInvert) {
-        Map<V, K> invertedMap = new HashMap<V, K>();
+	private static <K,V> HashMap<V, K> invertMap(HashMap<K, V> toInvert) {
+		HashMap<V, K> invertedMap = new HashMap<V, K>();
         for(K k: toInvert.keySet()){
         	invertedMap.put(toInvert.get(k), k);
         }
@@ -27,7 +27,7 @@ public class CsvToTrans
     		return;
     	}
     	
-    	Map<String, Integer> mapTrans = new HashMap<String, Integer>();
+    	HashMap<String, Integer> mapTrans = new HashMap<String, Integer>();
 		BufferedReader in = new BufferedReader(new FileReader(args[0]));
 		PrintWriter out = new PrintWriter(args[2], "UTF-8");
 	    
@@ -36,8 +36,10 @@ public class CsvToTrans
 	    while ((line = in.readLine()) != null) {
 	    	String[] words = line.split("\";\"");
 	    	for (int i = 2; i < words.length; ++i) {
-	    		if (words[i].length() == 0) continue;
-	    		String word = words[i].substring(0, words[i].length());
+	    		String word = words[i];
+	    		if (i == words.length - 1) // si dernier mot
+	    			word = word.substring(0, words[i].length() - 2); // on enlève les "; restants
+	    		System.out.println(word);
 	    		Integer wordID = mapTrans.get(word);
 	    		if (wordID == null) {
 	    			out.print(count+1);
@@ -45,7 +47,7 @@ public class CsvToTrans
 	    		}
 	    		else
 	    			out.print(wordID);
-	    		if (i < words.length -1)
+	    		if (i < words.length -1) // si NON dernier mot
 	    			out.print(' ');
 	    	}
 	    	out.print('\n');
@@ -54,7 +56,7 @@ public class CsvToTrans
 	    in.close();
 	    out.close();
 	    
-	    Map<Integer, String> invertedMapTrans = invertMap(mapTrans); // On inverse la map pour faciliter sa lecture plus tard
+	    HashMap<Integer, String> invertedMapTrans = invertMap(mapTrans); // On inverse la map pour faciliter sa lecture plus tard
 	    
 	    ObjectOutputStream dicoOut = new ObjectOutputStream(new FileOutputStream(args[1]));
 	    
