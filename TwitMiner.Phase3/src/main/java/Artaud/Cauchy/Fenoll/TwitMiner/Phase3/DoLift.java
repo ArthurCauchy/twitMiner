@@ -31,7 +31,6 @@ public class DoLift {
 		BufferedReader aprioriReader = new BufferedReader(new FileReader(args[0]));
 		BufferedReader assocReader = new BufferedReader(new FileReader(args[1]));
 		PrintWriter liftWriter = new PrintWriter(args[3], "UTF-8");
-		liftWriter.flush();
 		SortedMap<Double, String> scoreMap = new TreeMap<Double, String>(Collections.reverseOrder());
 		Map<String, Integer> freqMap = new HashMap<String, Integer>();
 		String lineApriori;
@@ -60,9 +59,10 @@ public class DoLift {
 	    		break;
 	    	Double score = entry.getKey();
 	    	String assoc = entry.getValue();
-	    	System.out.println("DEBUG " + assoc + " (" + score + ")" + " DEBUG");
-	    	liftWriter.println(assoc + " (" + score + ")");
+	    	liftWriter.print(assoc + " (" + score + ")\n");
 	    	++i;
 	    }
+	    
+	    liftWriter.close();
 	}
 }
