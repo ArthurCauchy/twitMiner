@@ -31,9 +31,14 @@ public class Filter {
 	    	String[] words = lineIn.split("\";\"");
 	    	String lineOut = "";
 	    	for (int i = 0; i < words.length; ++i) {
-	    		if (uselessDico.contains(words[i].toUpperCase()))
+	    		String word = words[i];
+	    		if (i == 0) // if first word
+	    			word = word.substring(1); // remove the first character which is "
+	    		else if (i == words.length - 1) // if last word
+	    			word = word.substring(0, word.length() - 2); // remove the last 2 : ";
+	    		if (uselessDico.contains(word.toUpperCase()))
 	    			continue;
-	    		lineOut += "\"" + words[i] + "\";";
+	    		lineOut += "\"" + word + "\";";
 	    	}
 	    	fileOut.println(lineOut);
 	    	System.out.println("");
