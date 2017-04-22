@@ -38,8 +38,7 @@ public class CsvToTrans
 	    	for (int i = 2; i < words.length; ++i) {
 	    		String word = words[i];
 	    		if (i == words.length - 1) // si dernier mot
-	    			word = word.substring(0, words[i].length() - 2); // on enlève les "; restants
-	    		System.out.println(word);
+	    			word = word.substring(0, word.length() - 2); // on enlève les "; restants
 	    		Integer wordID = mapTrans.get(word);
 	    		if (wordID == null) {
 	    			out.print(count+1);
@@ -47,7 +46,7 @@ public class CsvToTrans
 	    		}
 	    		else
 	    			out.print(wordID);
-	    		if (i < words.length -1) // si NON dernier mot
+	    		if (i < words.length - 1) // si NON dernier mot
 	    			out.print(' ');
 	    	}
 	    	out.print('\n');
