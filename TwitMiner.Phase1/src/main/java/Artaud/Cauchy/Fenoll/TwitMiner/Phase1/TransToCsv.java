@@ -11,6 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TransToCsv {
+	
+	/* Returns true if the string can be interpreted as an Integer number */
+	private static boolean isInteger(String str) {
+		try {
+			Integer integer = Integer.valueOf(str);
+		} catch(NumberFormatException nfe) {
+			return false;
+		}
+		return true;  
+	}
+	
 	/* Retrouve le mot associé à un nombre */
 	private static String convertToWord(Map<Integer, String> mapTrans, Integer id) {
 		return mapTrans.get(id);
@@ -35,6 +46,8 @@ public class TransToCsv {
 	    while ((line = in.readLine()) != null) {
 	    	String[] ids = line.split(" ");
 	    	for (int i = 0; i < ids.length; ++i) {
+	    		if (!isInteger(ids[i])) // si le mot n'est pas un nombre
+	    			continue;
 	    		String word = convertToWord(mapTrans, Integer.valueOf(ids[i]));
 	    		if (word == null)
 	    			continue;
