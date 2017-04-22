@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,7 +30,7 @@ public class DoLift {
 		BufferedReader aprioriReader = new BufferedReader(new FileReader(args[0]));
 		BufferedReader assocReader = new BufferedReader(new FileReader(args[1]));
 		PrintWriter liftWriter = new PrintWriter(args[3], "UTF-8");
-		SortedMap<Double, String> scoreMap = new TreeMap<Double, String>();
+		SortedMap<Double, String> scoreMap = new TreeMap<Double, String>(Collections.reverseOrder());
 		Map<String, Integer> freqMap = new HashMap<String, Integer>();
 		String lineApriori;
 	    while ((lineApriori = aprioriReader.readLine()) != null) {
@@ -37,7 +38,6 @@ public class DoLift {
 	    	Integer freq = Integer.parseInt(lineApriori.split("\\(")[1].split("\\)")[0]);
 	    	freqMap.put(wordIdText, freq);
 	    }
-	    Thread.sleep(6000);
 		String lineAssoc;
 	    while ((lineAssoc = assocReader.readLine()) != null) {
 	    	String assoc = lineAssoc.split(" \\(")[0];
