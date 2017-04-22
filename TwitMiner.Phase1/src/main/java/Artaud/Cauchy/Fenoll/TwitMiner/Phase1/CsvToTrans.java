@@ -11,6 +11,15 @@ import java.util.Map;
 
 public class CsvToTrans 
 {
+	/* Inverse les valeurs avec les clés d'une map */
+	private static <K,V> Map<V, K> invertMap(Map<K, V> toInvert) {
+        Map<V, K> invertedMap = new HashMap<V, K>();
+        for(K k: toInvert.keySet()){
+        	invertedMap.put(toInvert.get(k), k);
+        }
+        return invertedMap;
+    }
+	
     public static void main(String[] args) throws IOException
     {
     	if (args.length != 3) {
@@ -44,10 +53,12 @@ public class CsvToTrans
 	    
 	    in.close();
 	    out.close();
-    	
+	    
+	    Map<Integer, String> invertedMapTrans = invertMap(mapTrans); // On inverse la map pour faciliter sa lecture plus tard
+	    
 	    ObjectOutputStream dicoOut = new ObjectOutputStream(new FileOutputStream(args[1]));
 	    
-    	dicoOut.writeObject(mapTrans); // On serialize la relation entre les mots et leurs nombre pour plus tard
+    	dicoOut.writeObject(invertedMapTrans); // On serialize la relation entre les mots et leurs nombre pour plus tard
     	
     	dicoOut.close();
     }
