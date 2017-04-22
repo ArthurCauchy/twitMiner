@@ -11,11 +11,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Map;
 
-public class OutToCsv {
+public class TransToCsv {
+	/* Retrouve le mot associé à un nombre */
+	private String convertToWord(Map<Integer, String> mapTrans, int id) {
+		return mapTrans.get(id);
+	}
 	
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 		if (args.length != 2) {
-			System.out.println("Usage : ./OutToCsv <file.map> <file.csv>");
+			System.out.println("Usage : ./TransToCsv <file.trans> <file.map> <file.csv>");
 			return;
 		}
 		File mapFile = new File(args[0]);
