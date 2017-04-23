@@ -63,6 +63,8 @@ public class Results {
 	    			fileOut.print(word + " ");
 	    	}
 	    	
+	    	fileOut.print(" -> ");
+	    	
 	    	String[] ids2 = right.split(" ");
 	    	for (int i = 0; i < ids2.length; ++i) {
 	    		if (!isInteger(ids2[i])) { // si le mot n'est pas un nombre
