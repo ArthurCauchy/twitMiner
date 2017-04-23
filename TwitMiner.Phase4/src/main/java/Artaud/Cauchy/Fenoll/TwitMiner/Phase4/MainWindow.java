@@ -3,7 +3,13 @@ package Artaud.Cauchy.Fenoll.TwitMiner.Phase4;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,14 +19,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;;
 
 public class MainWindow extends JFrame implements ActionListener {
 	private JComboBox<String> sortCombo = null;
 	private JButton fcButton = null;
 	
-	private DefaultTableModel dataTableModel = null;
+	private JTable resultTab = null;
 	
 	private JFileChooser fc = new JFileChooser();
 	
@@ -32,9 +42,9 @@ public class MainWindow extends JFrame implements ActionListener {
 		north.add(sortLabel, BorderLayout.NORTH);
 		
 		sortCombo = new JComboBox<String>();
-		sortCombo.addItem("Fréquence");
-		sortCombo.addItem("Confiance");
 		sortCombo.addItem("Lift");
+		sortCombo.addItem("Confiance");
+		sortCombo.addItem("Fréquence");
 		sortCombo.addActionListener(this);
 		north.add(sortCombo, BorderLayout.CENTER);
 		
@@ -42,9 +52,9 @@ public class MainWindow extends JFrame implements ActionListener {
 	}
 	
 	private void initCenterPane() {
-		String[] columnNames = {"Association", "Fréquence", "Confiance", "Lift"};
-		dataTableModel = new DefaultTableModel(null, columnNames);
-		JTable resultTab = new JTable(dataTableModel);
+		String[] columnNames = {"Association", "Lift", "Confiance", "Fréquence"};
+		DefaultTableModel dataTableModel = new DefaultTableModel(null, columnNames);
+		resultTab = new JTable(dataTableModel);
 	    
 		JScrollPane centerScroll = new JScrollPane(resultTab);
 		
@@ -68,9 +78,36 @@ public class MainWindow extends JFrame implements ActionListener {
 	}
 	
 	private void addRow(String assoc, String freq, String conf, String lift) {
-		if (dataTableModel == null)
+		if (resultTab == null)
 			return;
-		dataTableModel.addRow(new String[] {assoc, freq, conf, lift});
+		((DefaultTableModel) resultTab.getModel()).addRow(new String[] {assoc, freq, conf, lift});
+	}
+	
+	private void sortTable(String mode) {
+		int colKey = 1;
+		if (mode == "Lift")
+			colKey = 1;
+		else if (mode == "Confiance")
+			colKey = 2;
+		else if (mode == "Fréquence")
+			colKey = 3;
+			
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(resultTab.getModel());
+		Comparator<String> comp = new Comparator<String>() {
+	        public int compare(String s1, String s2)
+	        {
+	            return new Double(s1).compareTo(new Double(s2));
+	        }
+	    };
+	    sorter.setComparator(1, comp);
+	    sorter.setComparator(2, comp);
+	    sorter.setComparator(3, comp);
+		resultTab.setRowSorter(sorter);
+
+		List<RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
+		sortKeys.add(new RowSorter.SortKey(colKey, SortOrder.DESCENDING));
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		sorter.setSortKeys(sortKeys);
 	}
 	
 	public MainWindow(String title) {
@@ -86,23 +123,32 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == sortCombo) {
-			if (sortCombo.getSelectedItem().toString() == "Fréquence") {
-				System.out.println("classer par Fréquence");
-			}
-			else if (sortCombo.getSelectedItem().toString() == "Confiance") {
-				System.out.println("classer par Confiance");
-			}
-			else if (sortCombo.getSelectedItem().toString() == "Lift") {
-				System.out.println("classer par Lift");
-			}
+			sortTable(sortCombo.getSelectedItem().toString());
 		}
 		else if (e.getSource() == fcButton) {
 			System.out.println("choose a file !");
-			addRow("ceci", "est", "un", "test");
 			int returnVal = fc.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File file = fc.getSelectedFile();
-				System.out.println(file);
+				try {
+					BufferedReader fileReader = new BufferedReader(new FileReader(fc.getSelectedFile()));
+					String line;
+				    while ((line = fileReader.readLine()) != null) {
+				    	String assoc = line.split(" \\(")[0];
+				    	String score = line.split(" \\(")[1];
+				    	String lift = score.split("lift:")[1].split(" ")[0];
+				    	String conf = score.split("conf:")[1].split(" ")[0];
+				    	String freq = score.split("freq:")[1].split("\\)")[0];
+				    	this.addRow(assoc, lift, conf, freq);
+				    }
+				    fileReader.close();
+				    sortTable("Lift");
+				} catch (FileNotFoundException err) {
+					err.printStackTrace();
+					System.exit(1);
+				} catch (IOException err) {
+					err.printStackTrace();
+					System.exit(1);
+				}
 			}
 		}
 	}
