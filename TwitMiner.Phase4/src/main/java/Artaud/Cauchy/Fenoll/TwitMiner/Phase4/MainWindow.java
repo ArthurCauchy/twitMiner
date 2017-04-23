@@ -3,6 +3,7 @@ package Artaud.Cauchy.Fenoll.TwitMiner.Phase4;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -43,11 +44,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	private void initCenterPane() {
 		String[] columnNames = {"Association", "Fréquence", "Confiance", "Lift"};
 		dataTableModel = new DefaultTableModel(null, columnNames);
-		JTable resultTab = new JTable(dataTableModel) {
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			};
-		};
+		JTable resultTab = new JTable(dataTableModel);
 	    
 		JScrollPane centerScroll = new JScrollPane(resultTab);
 		
@@ -79,7 +76,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	public MainWindow(String title) {
 		super(title);
 		
-		this.setSize(500, 500);
+		this.setSize(1000, 500);
 		this.setLocationRelativeTo(null); // vertical and horizontal center
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(new BorderLayout());
@@ -89,14 +86,23 @@ public class MainWindow extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == sortCombo) {
-			System.out.println("action performed");
+			if (sortCombo.getSelectedItem().toString() == "Fréquence") {
+				System.out.println("classer par Fréquence");
+			}
+			else if (sortCombo.getSelectedItem().toString() == "Confiance") {
+				System.out.println("classer par Confiance");
+			}
+			else if (sortCombo.getSelectedItem().toString() == "Lift") {
+				System.out.println("classer par Lift");
+			}
 		}
 		else if (e.getSource() == fcButton) {
 			System.out.println("choose a file !");
 			addRow("ceci", "est", "un", "test");
 			int returnVal = fc.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				
+				File file = fc.getSelectedFile();
+				System.out.println(file);
 			}
 		}
 	}
