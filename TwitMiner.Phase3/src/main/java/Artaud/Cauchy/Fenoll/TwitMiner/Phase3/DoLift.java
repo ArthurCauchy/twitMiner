@@ -1,10 +1,10 @@
 package Artaud.Cauchy.Fenoll.TwitMiner.Phase3;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class DoLift {
 		BufferedReader aprioriReader = new BufferedReader(new FileReader(args[0]));
 		BufferedReader assocReader = new BufferedReader(new FileReader(args[1]));
 		PrintWriter liftWriter = new PrintWriter(args[3], "UTF-8");
-		SortedMap<Double, String> scoreMap = new TreeMap<Double, String>(Collections.reverseOrder());
+		SortedMap<Double, Object[]> scoreMap = new TreeMap<Double, Object[]>(Collections.reverseOrder());
 		Map<String, Integer> freqMap = new HashMap<String, Integer>();
 		String lineApriori;
 	    while ((lineApriori = aprioriReader.readLine()) != null) {
@@ -50,16 +50,19 @@ public class DoLift {
 	    	Double score = conf / Yfreq;
 	    	/*if (score <= 1)
 	    		continue;*/
-	    	scoreMap.put(score, assoc);
+	    	Object[] datas = {assoc, conf};
+	    	scoreMap.put(score, datas);
 	    }
 	    
 	    int i = 0;
-	    for(Entry<Double, String> entry : scoreMap.entrySet()) {
+	    for(Entry<Double, Object[]> entry : scoreMap.entrySet()) {
 	    	if (i >= Integer.parseInt(args[2]))
 	    		break;
 	    	Double score = entry.getKey();
-	    	String assoc = entry.getValue();
-	    	liftWriter.print(assoc + " (" + score + ")\n");
+	    	Object[] objects = entry.getValue();
+	    	String assoc = (String) objects[0];
+	    	Double conf = (Double) objects[1];
+	    	liftWriter.print(assoc + " (lift:" + score + " conf:" + conf + ")\n");
 	    	++i;
 	    }
 	    
