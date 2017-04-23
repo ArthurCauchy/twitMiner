@@ -126,7 +126,6 @@ public class MainWindow extends JFrame implements ActionListener {
 			sortTable(sortCombo.getSelectedItem().toString());
 		}
 		else if (e.getSource() == fcButton) {
-			System.out.println("choose a file !");
 			int returnVal = fc.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				try {
