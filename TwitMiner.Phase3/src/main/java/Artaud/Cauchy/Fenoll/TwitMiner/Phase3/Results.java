@@ -63,7 +63,7 @@ public class Results {
 	    			fileOut.print(word + " ");
 	    	}
 	    	
-	    	fileOut.print(" -> ");
+	    	fileOut.print("-> ");
 	    	
 	    	String[] ids2 = right.split(" ");
 	    	for (int i = 0; i < ids2.length; ++i) {
@@ -79,7 +79,7 @@ public class Results {
 	    		else
 	    			fileOut.print(word + " ");
 	    	}
-	    	fileOut.print(" (" + score + '\n');
+	    	fileOut.print("(" + score + '\n');
 	    }
 	    
 	    fileIn.close();
