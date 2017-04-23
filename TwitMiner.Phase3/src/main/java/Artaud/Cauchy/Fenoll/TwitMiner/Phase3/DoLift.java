@@ -24,45 +24,93 @@ public class DoLift {
 	}
 	
 	public static void main (String[] args) throws IOException, InterruptedException {
-		if (args.length < 4) {
-			System.out.println("Usage : ./dolift <file_in.apriori> <file_in.assoc> <how_much> <file_out.lift>");
+		if (args.length < 5) {
+			System.out.println("Usage : ./dolift <file_in.trans> <file_in.apriori> <file_in.assoc> <how_much> <file_out.lift>");
 			return;
 		}
-		BufferedReader aprioriReader = new BufferedReader(new FileReader(args[0]));
-		BufferedReader assocReader = new BufferedReader(new FileReader(args[1]));
-		PrintWriter liftWriter = new PrintWriter(args[3], "UTF-8");
+		BufferedReader transReader = new BufferedReader(new FileReader(args[0]));
+		BufferedReader aprioriReader = new BufferedReader(new FileReader(args[1]));
+		BufferedReader assocReader = new BufferedReader(new FileReader(args[2]));
+		PrintWriter liftWriter = new PrintWriter(args[4], "UTF-8");
 		SortedMap<Double, Object[]> scoreMap = new TreeMap<Double, Object[]>(Collections.reverseOrder());
 		Map<String, Integer> freqMap = new HashMap<String, Integer>();
+		ArrayList<ArrayList<Integer>> transFileContent = new ArrayList<ArrayList<Integer>>();
+		
+		String lineTrans;
+	    while ((lineTrans = transReader.readLine()) != null) {
+	    	String[] ids = lineTrans.split(" ");
+	    	ArrayList<Integer> line = new ArrayList<Integer>();
+	    	for (short i = 0; i < ids.length; ++i) {
+	    		line.add(new Integer(ids[i]));
+	    	}
+	    	transFileContent.add(line);
+	    }
+	    transReader.close();
+		
 		String lineApriori;
 	    while ((lineApriori = aprioriReader.readLine()) != null) {
 	    	String wordIdText = lineApriori.split(" \\(")[0];
 	    	Integer freq = Integer.parseInt(lineApriori.split("\\(")[1].split("\\)")[0]);
 	    	freqMap.put(wordIdText, freq);
 	    }
+	    aprioriReader.close();
+	    
 		String lineAssoc;
 	    while ((lineAssoc = assocReader.readLine()) != null) {
 	    	String assoc = lineAssoc.split(" \\(")[0];
 	    	Double conf = Double.parseDouble(lineAssoc.split("\\(")[1].split("\\)")[0]);
-	    	String Y = assoc.split("-> ")[1];
+	    	String X = assoc.split(" -> ")[0];
+	    	String Y = assoc.split(" -> ")[1];
 	    	Integer Yfreq = freqMap.get(Y);
 	    	if (Yfreq == null || Yfreq == 0) // bug ???
 	    		continue;
-	    	Double score = conf / Yfreq;
 	    	/*if (score <= 1)
-	    		continue;*/
-	    	Object[] datas = {assoc, conf};
+    			continue;*/
+	    	
+	    	Double score = conf / Yfreq;
+	    	
+	    	Object[] datas = {X, Y, conf};
 	    	scoreMap.put(score, datas);
 	    }
+	    assocReader.close();
 	    
-	    int i = 0;
+	    short i = 0;
 	    for(Entry<Double, Object[]> entry : scoreMap.entrySet()) {
-	    	if (i >= Integer.parseInt(args[2]))
+	    	if (i >= Integer.parseInt(args[3]))
 	    		break;
-	    	Double score = entry.getKey();
+	    	
 	    	Object[] objects = entry.getValue();
-	    	String assoc = (String) objects[0];
-	    	Double conf = (Double) objects[1];
-	    	liftWriter.print(assoc + " (lift:" + score + " conf:" + conf + ")\n");
+	    	String X = (String) objects[0];
+	    	String Y = (String) objects[1];
+	    	Double conf = (Double) objects[2];
+	    	
+	    	int occur = 0;
+	    	for (ArrayList<Integer> transLine : transFileContent) {
+	    		boolean containsAll = true;
+	    		String[] idsX = X.split(" ");
+	    		String[] idsY = Y.split(" ");
+	    		for (short j = 0; j < idsX.length; ++j) {
+	    			if (!transLine.contains(Integer.valueOf(idsX[j]))) {
+	    				containsAll = false;
+	    				break;
+	    			}
+	    		}
+	    		if (containsAll) {
+	    			for (short j = 0; j < idsY.length; ++j) {
+		    			if (!transLine.contains(Integer.valueOf(idsY[j]))) {
+		    				containsAll = false;
+		    				break;
+		    			}
+		    		}
+	    		}
+	    		if (containsAll)
+	    			++occur;
+	    	}
+	    	Double freq = ((double) occur) / transFileContent.size();
+	    	
+	    	Double score = entry.getKey();
+	    	
+	    	liftWriter.print(X + " -> " + Y + " (lift:" + score + " conf:" + conf + " freq:" + freq + ")\n");
 	    	++i;
 	    }
 	    
