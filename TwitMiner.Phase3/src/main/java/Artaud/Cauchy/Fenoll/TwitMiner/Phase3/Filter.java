@@ -42,7 +42,9 @@ public class Filter {
 	    		lineOut += "\"" + word + "\";";
 	    	}
 	    	fileOut.println(lineOut);
-	    	System.out.println("");
 	    }
+	    
+	    fileIn.close();
+	    fileOut.close();
 	}
 }
